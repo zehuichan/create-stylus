@@ -1,0 +1,27 @@
+{
+  "name": "tpl-cli",
+  "version": "1.0.0",
+  "description": "pc、公众号、h5，cli模板创建",
+  "bin": {
+    "tpl": "src/bin.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zehuichan/tpl-cli.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zehuichan/tpl-cli/issues"
+  },
+  "homepage": "https://github.com/zehuichan/tpl-cli#readme",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "commander": "^8.0.0",
+    "download-git-repo": "^3.0.2",
+    "ora": "^5.4.1"
+  }
+}
