@@ -53,11 +53,14 @@ function emptyDir(dir) {
 }
 
 async function init() {
-  console.log('\nproject init...\n')
+  console.log('\nProject init...\n')
 
   const cwd = process.cwd()
 
   const argv = minimist(process.argv.slice(2), { boolean: true })
+
+  // if any of the feature flags is set, we would skip the feature prompts
+  const isFeatureFlagsUsed = typeof argv.eslint === 'boolean'
 
   let targetDir = argv._[0]
   const defaultProjectName = !targetDir ? 'vue-project' : targetDir
@@ -100,6 +103,26 @@ async function init() {
           message: 'Package name:',
           initial: () => toValidPackageName(targetDir),
           validate: (dir) => isValidPackageName(dir) || 'Invalid package.json name'
+        },
+        {
+          name: 'frameworkVersion',
+          type: 'select',
+          message: 'Vue Version:',
+          choices: [
+            { title: 'Vue3.0', value: 'config/vue3.0' },
+            { title: 'Vue2.7', value: 'config/vue2.7' }
+          ],
+          initial: 0
+        },
+        {
+          name: 'componentLibrary',
+          type: 'select',
+          message: 'Component Library:',
+          choices: [
+            { title: 'Desktop', value: 'code/element-plus' },
+            { title: 'Mobile', value: 'code/element' }
+          ],
+          initial: 0
         }
       ],
       {
@@ -113,7 +136,13 @@ async function init() {
     process.exit(1)
   }
 
-  const { projectName, packageName = projectName ?? defaultProjectName, shouldOverwrite = argv.force } = result
+  const {
+    projectName,
+    packageName = projectName ?? defaultProjectName,
+    shouldOverwrite = argv.force,
+    frameworkVersion,
+    codeTemplate
+  } = result
 
   const root = path.join(cwd, targetDir)
 
@@ -138,8 +167,14 @@ async function init() {
     renderTemplate(templateDir, root)
   }
 
-  // Render base template
+  // 1. Render base template.
   render('base')
+
+  // 2. Add configs.
+  render(frameworkVersion)
+
+  // 3. Render code template.
+  render(codeTemplate)
 
   // Instructions:
   // Supported package managers: pnpm > yarn > npm

@@ -1,8 +1,13 @@
 # create-stylus
 
-本地运行，前置条件
+### 介绍
+
+todo
+
+### 本地运行，前置条件
 
 ```shell
+# just run once
 npm link
 ```
 
@@ -13,4 +18,13 @@ pnpm install
 pnpm run build
 ```
 
-forked 自 https://github.com/vuejs/create-vue.git
+### 使用
+
+```shell
+# short name
+cs
+# full
+create-stylus
+```
+
+感谢 [create-vue](https://github.com/vuejs/create-vue.git) 提供的灵感
