@@ -105,22 +105,15 @@ async function init() {
           validate: (dir) => isValidPackageName(dir) || 'Invalid package.json name'
         },
         {
-          name: 'frameworkVersion',
-          type: 'select',
-          message: 'Vue Version:',
-          choices: [
-            { title: 'Vue3.0', value: 'config/vue3.0' },
-            { title: 'Vue2.7', value: 'config/vue2.7' }
-          ],
-          initial: 0
-        },
-        {
           name: 'componentLibrary',
           type: 'select',
           message: 'Component Library:',
           choices: [
-            { title: 'Desktop', value: 'code/element-plus' },
-            { title: 'Mobile', value: 'code/element' }
+            { title: 'Element Plus', value: 'element-plus' },
+            { title: 'Element', value: 'element' },
+            { title: 'Vant2', value: 'vant2' },
+            { title: 'Vant3', value: 'vant3' },
+            { title: 'Vant4', value: 'vant4' }
           ],
           initial: 0
         }
@@ -140,8 +133,7 @@ async function init() {
     projectName,
     packageName = projectName ?? defaultProjectName,
     shouldOverwrite = argv.force,
-    frameworkVersion,
-    codeTemplate
+    componentLibrary
   } = result
 
   const root = path.join(cwd, targetDir)
@@ -167,14 +159,19 @@ async function init() {
     renderTemplate(templateDir, root)
   }
 
-  // 1. Render base template.
+  // Render base template.
   render('base')
 
-  // 2. Add configs.
-  render(frameworkVersion)
+  // Add configs.
+  if (['element-plus', 'vant3', 'vant4'].includes(componentLibrary)) {
+    render(`config/vue3.0`)
+  }
+  if (['element', 'vant2'].includes(componentLibrary)) {
+    render(`config/vue2.7`)
+  }
 
-  // 3. Render code template.
-  render(codeTemplate)
+  // Render code template.
+  render(`code/${componentLibrary}`)
 
   // Instructions:
   // Supported package managers: pnpm > yarn > npm
